@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html class="dark" lang="en">
+
+<head>
+
+    <meta charset="utf-8" />
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0" />
+
+    <title>DriveDigest</title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style>
+
+        body {
+            background-color: #09090b;
+            color: #f4f4f5;
+        }
+
+        .glass-card {
+            background: rgba(24, 24, 27, 0.85);
+            border: 1px solid #27272a;
+            backdrop-filter: blur(12px);
+        }
+
+        .table-row:hover {
+            background-color: rgba(39, 39, 42, 0.4);
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background-color: #3f3f46;
+            border-radius: 999px;
+        }
+
+    </style>
+
+</head>
+
+<body class="min-h-screen">
+
+    <!-- NAVBAR -->
+
+    <header class="sticky top-0 z-50 border-b border-zinc-800 bg-zinc-950/80 backdrop-blur-xl">
+
+        <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+
+            <div class="flex items-center gap-3">
+
+                <h1 class="text-3xl font-bold tracking-tight">
+                    DriveDigest
+                </h1>
+
+                <span class="bg-blue-500/20 text-blue-400 text-xs px-2 py-1 rounded-md">
+                    AI
+                </span>
+
+            </div>
+
+            <div class="flex items-center gap-4">
+
+                {% if user %}
+
+                <div class="flex items-center gap-3">
+
+                    <div class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center font-semibold">
+                        {{ user.name[0] }}
+                    </div>
+
+                    <div>
+
+                        <p class="font-medium">
+                            {{ user.name }}
+                        </p>
+
+                        <p class="text-sm text-zinc-400">
+                            Logged In
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <a
+                    href="/logout"
+                    class="border border-zinc-700 hover:bg-zinc-900 px-4 py-2 rounded-lg transition-all">
+
+                    Logout
+
+                </a>
+
+                {% else %}
+
+                <a
+                    href="/login"
+                    class="bg-white text-black px-5 py-2 rounded-lg font-semibold hover:bg-zinc-200 transition-all">
+
+                    Login with Google
+
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <!-- MAIN -->
+
+    <main class="max-w-7xl mx-auto px-6 py-10 space-y-10">
+
+        <!-- HERO -->
+
+        <section class="text-center space-y-4">
+
+            <h2 class="text-5xl md:text-6xl font-bold leading-tight">
+
+                AI Document Summarizer
+
+            </h2>
+
+            <p class="text-zinc-400 text-lg max-w-3xl mx-auto leading-8">
+
+                Upload PDFs, DOCX, and TXT files or process entire
+                Google Drive folders to generate concise AI-powered summaries.
+
+            </p>
+
+        </section>
+
+        <!-- ACTION CARDS -->
+
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+            <!-- UPLOAD -->
+
+            <div class="glass-card rounded-3xl p-8 space-y-6">
+
+                <div>
+
+                    <h3 class="text-2xl font-semibold">
+                        Upload Document
+                    </h3>
+
+                    <p class="text-zinc-400 mt-2">
+                        Supported formats: PDF, DOCX, TXT
+                    </p>
+
+                </div>
+
+                <form
+                    action="/summarize"
+                    method="post"
+                    enctype="multipart/form-data"
+                    class="space-y-5">
+
+                    <div class="border-2 border-dashed border-zinc-700 rounded-2xl p-8 text-center bg-zinc-900/40">
+
+                        <input
+                            type="file"
+                            name="file"
+                            required
+                            class="block w-full text-sm text-zinc-300" />
+
+                    </div>
+
+                    <button
+                        type="submit"
+                        class="w-full bg-blue-600 hover:bg-blue-500 transition-all py-3 rounded-xl font-semibold text-lg">
+
+                        Generate Summary
+
+                    </button>
+
+                </form>
+
+            </div>
+
+            <!-- GOOGLE DRIVE -->
+
+            <div class="glass-card rounded-3xl p-8 space-y-6">
+
+                <div>
+
+                    <h3 class="text-2xl font-semibold">
+                        Google Drive
+                    </h3>
+
+                    <p class="text-zinc-400 mt-2">
+                        Process documents directly from a Drive folder.
+                    </p>
+
+                </div>
+
+                <form
+                    action="/process-drive-folder"
+                    method="post"
+                    class="space-y-5">
+
+                    <input
+                        type="text"
+                        name="folder_id"
+                        placeholder="Enter Google Drive Folder ID"
+                        required
+                        class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+
+                    <button
+                        type="submit"
+                        class="w-full bg-zinc-800 hover:bg-zinc-700 transition-all py-3 rounded-xl font-semibold text-lg">
+
+                        Process Drive Folder
+
+                    </button>
+
+                </form>
+
+            </div>
+
+        </section>
+
+        <!-- EXPORT BUTTONS -->
+
+        <section class="flex flex-wrap gap-4">
+
+            <a
+                href="/download/csv"
+                class="border border-zinc-700 hover:bg-zinc-900 px-5 py-3 rounded-xl transition-all">
+
+                Download CSV
+
+            </a>
+
+            <a
+                href="/download/pdf"
+                class="border border-zinc-700 hover:bg-zinc-900 px-5 py-3 rounded-xl transition-all">
+
+                Download PDF
+
+            </a>
+
+        </section>
+
+        <!-- SUMMARY TABLE -->
+
+        <section class="glass-card rounded-3xl overflow-hidden">
+
+            <div class="p-8 border-b border-zinc-800 flex items-center justify-between">
+
+                <div>
+
+                    <h3 class="text-3xl font-bold">
+                        Recent Summaries
+                    </h3>
+
+                    <p class="text-zinc-400 mt-2">
+                        AI generated summaries from uploaded documents.
+                    </p>
+
+                </div>
+
+            </div>
+
+            {% if summaries %}
+
+            <div class="overflow-x-auto">
+
+                <table class="w-full">
+
+                    <thead class="bg-zinc-900 text-zinc-400 text-sm uppercase tracking-wider">
+
+                        <tr>
+
+                            <th class="text-left px-6 py-5">
+                                File
+                            </th>
+
+                            <th class="text-left px-6 py-5">
+                                Type
+                            </th>
+
+                            <th class="text-left px-6 py-5">
+                                Summary
+                            </th>
+
+                            <th class="text-left px-6 py-5">
+                                Actions
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        {% for item in summaries %}
+
+                        <tr class="table-row border-t border-zinc-800 transition-all">
+
+                            <!-- FILE -->
+
+                            <td class="px-6 py-6 font-medium whitespace-nowrap">
+
+                                {{ item.filename }}
+
+                            </td>
+
+                            <!-- TYPE -->
+
+                            <td class="px-6 py-6">
+
+                                <span class="bg-zinc-800 text-zinc-300 px-3 py-1 rounded-full text-sm">
+
+                                    {{ item.mime_type }}
+
+                                </span>
+
+                            </td>
+
+                            <!-- SUMMARY -->
+
+                            <td class="px-6 py-6 max-w-2xl text-zinc-300 leading-7">
+
+                                {{ item.summary_text[:280] }}...
+
+                            </td>
+
+                            <!-- ACTIONS -->
+
+                            <td class="px-6 py-6">
+
+                                <button
+                                    onclick="openModal(`{{ item.summary_text}}`)"
+                                    class="bg-blue-600 hover:bg-blue-500 transition-all px-4 py-2 rounded-lg text-sm font-medium">
+
+                                    View
+
+                                </button>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <!-- EMPTY STATE -->
+
+            <div class="p-20 text-center space-y-4">
+
+                <div class="text-6xl">
+                    📄
+                </div>
+
+                <h3 class="text-2xl font-semibold">
+                    No summaries yet
+                </h3>
+
+                <p class="text-zinc-400">
+                    Upload a document to generate your first AI summary.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+    <!-- MODAL -->
+
+    <div
+        id="summaryModal"
+        class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center px-4">
+
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl w-full max-w-4xl max-h-[85vh] overflow-hidden">
+
+            <!-- MODAL HEADER -->
+
+            <div class="flex items-center justify-between p-6 border-b border-zinc-800">
+
+                <h2 class="text-2xl font-bold">
+                    Full Summary
+                </h2>
+
+                <button
+                    onclick="closeModal()"
+                    class="text-zinc-400 hover:text-white text-3xl">
+
+                    &times;
+
+                </button>
+
+            </div>
+
+            <!-- MODAL CONTENT -->
+
+            <div
+                id="modalContent"
+                class="p-8 text-zinc-300 leading-8 overflow-y-auto max-h-[70vh] whitespace-pre-wrap custom-scroll">
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SCRIPT -->
+
+    <script>
+
+        function openModal(summary) {
+
+            document
+                .getElementById("summaryModal")
+                .classList.remove("hidden")
+
+            document
+                .getElementById("modalContent")
+                .innerText = summary
+        }
+
+        function closeModal() {
+
+            document
+                .getElementById("summaryModal")
+                .classList.add("hidden")
+        }
+
+        window.onclick = function (event) {
+
+            const modal = document.getElementById("summaryModal")
+
+            if (event.target === modal) {
+
+                closeModal()
+            }
+        }
+
+    </script>
+
+</body>
+
+</html>

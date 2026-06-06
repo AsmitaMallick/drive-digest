@@ -1,4 +1,4 @@
-# DriveDigest — AI Document Summarizer
+# DriveDigest : AI Document Summarizer
 
 An AI-powered document summarization system built with FastAPI, Google Drive API, Gemini AI, and Neon PostgreSQL.
 
@@ -21,7 +21,6 @@ The application automatically connects to a Google Drive folder, downloads suppo
 - PDF Report Download
 - Summary Modal Viewer
 - Automated Document Processing Pipeline
-
 ---
 
 # Tech Stack

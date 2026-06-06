@@ -51,7 +51,7 @@ async def auth_callback(request: Request):
 
     request.session["token"] = token_min
 
-    return RedirectResponse(url="/documents")
+    return RedirectResponse(url="/process-drive-folder",status_code=303)
 
 
 @router.get("/logout")
@@ -59,4 +59,4 @@ async def logout(request: Request):
 
     request.session.clear()
 
-    return RedirectResponse("/")
+    return RedirectResponse(url="/documents", status_code=303)

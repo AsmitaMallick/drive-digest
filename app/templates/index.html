@@ -80,7 +80,7 @@
                         </p>
 
                         <p class="text-sm text-zinc-400">
-                            Logged In
+                            Connected with Google
                         </p>
 
                     </div>
@@ -119,134 +119,125 @@
 
         <!-- HERO -->
 
-        <section class="text-center space-y-4">
+        <section class="text-center space-y-8">
 
-            <h2 class="text-5xl md:text-6xl font-bold leading-tight">
+            <div class="space-y-4">
 
-                AI Document Summarizer
+                <h2 class="text-5xl md:text-6xl font-bold leading-tight">
 
-            </h2>
+                    AI Drive Document Summarizer
 
-            <p class="text-zinc-400 text-lg max-w-3xl mx-auto leading-8">
+                </h2>
 
-                Upload PDFs, DOCX, and TXT files or process entire
-                Google Drive folders to generate concise AI-powered summaries.
+                <p class="text-zinc-400 text-lg max-w-3xl mx-auto leading-8">
 
-            </p>
+                    Automatically fetch, parse, summarize, and analyze documents
+                    directly from Google Drive using AI-powered workflows.
 
-        </section>
+                </p>
 
-        <!-- ACTION CARDS -->
+            </div>
 
-        <section class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {% if user %}
 
-            <!-- UPLOAD -->
+            <div
+                class="glass-card rounded-3xl p-8 max-w-3xl mx-auto text-left">
 
-            <div class="glass-card rounded-3xl p-8 space-y-6">
+                <div class="flex items-center gap-4 mb-6">
 
-                <div>
+                    <div class="w-12 h-12 rounded-full bg-blue-600 flex items-center justify-center text-xl">
 
-                    <h3 class="text-2xl font-semibold">
-                        Upload Document
-                    </h3>
-
-                    <p class="text-zinc-400 mt-2">
-                        Supported formats: PDF, DOCX, TXT
-                    </p>
-
-                </div>
-
-                <form
-                    action="/summarize"
-                    method="post"
-                    enctype="multipart/form-data"
-                    class="space-y-5">
-
-                    <div class="border-2 border-dashed border-zinc-700 rounded-2xl p-8 text-center bg-zinc-900/40">
-
-                        <input
-                            type="file"
-                            name="file"
-                            required
-                            class="block w-full text-sm text-zinc-300" />
+                        ⚡
 
                     </div>
 
-                    <button
-                        type="submit"
-                        class="w-full bg-blue-600 hover:bg-blue-500 transition-all py-3 rounded-xl font-semibold text-lg">
+                    <div>
 
-                        Generate Summary
+                        <h3 class="text-2xl font-semibold">
+                            Drive Processing Active
+                        </h3>
 
-                    </button>
+                        <p class="text-zinc-400">
+                            Connected to your Google Drive
+                        </p>
 
-                </form>
-
-            </div>
-
-            <!-- GOOGLE DRIVE -->
-
-            <div class="glass-card rounded-3xl p-8 space-y-6">
-
-                <div>
-
-                    <h3 class="text-2xl font-semibold">
-                        Google Drive
-                    </h3>
-
-                    <p class="text-zinc-400 mt-2">
-                        Process documents directly from a Drive folder.
-                    </p>
+                    </div>
 
                 </div>
 
-                <form
-                    action="/process-drive-folder"
-                    method="post"
-                    class="space-y-5">
+                <div class="space-y-4 text-zinc-300 leading-7">
 
-                    <input
-                        type="text"
-                        name="folder_id"
-                        placeholder="Enter Google Drive Folder ID"
-                        required
-                        class="w-full bg-zinc-900 border border-zinc-700 rounded-xl p-4 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <div class="flex items-center gap-3">
+                        <span class="text-green-400">✓</span>
+                        <span>Authenticated with Google OAuth</span>
+                    </div>
 
-                    <button
-                        type="submit"
-                        class="w-full bg-zinc-800 hover:bg-zinc-700 transition-all py-3 rounded-xl font-semibold text-lg">
+                    <div class="flex items-center gap-3">
+                        <span class="text-green-400">✓</span>
+                        <span>Fetching files from configured Drive folder</span>
+                    </div>
 
-                        Process Drive Folder
+                    <div class="flex items-center gap-3">
+                        <span class="text-green-400">✓</span>
+                        <span>Parsing PDF, DOCX, and TXT files</span>
+                    </div>
 
-                    </button>
+                    <div class="flex items-center gap-3">
+                        <span class="text-green-400">✓</span>
+                        <span>Generating AI summaries using Gemini</span>
+                    </div>
 
-                </form>
+                    <div class="flex items-center gap-3">
+                        <span class="text-green-400">✓</span>
+                        <span>Saving summaries into Neon PostgreSQL</span>
+                    </div>
+
+                </div>
 
             </div>
+
+            {% else %}
+
+            <div class="pt-4">
+
+                <a
+                    href="/login"
+                    class="inline-flex items-center gap-3 bg-white text-black px-8 py-4 rounded-2xl text-lg font-semibold hover:bg-zinc-200 transition-all shadow-2xl">
+
+                    <span>Login with Google</span>
+
+                </a>
+
+            </div>
+
+            {% endif %}
 
         </section>
 
         <!-- EXPORT BUTTONS -->
 
+        {% if summaries %}
+
         <section class="flex flex-wrap gap-4">
 
             <a
                 href="/download/csv"
-                class="border border-zinc-700 hover:bg-zinc-900 px-5 py-3 rounded-xl transition-all">
+                class="bg-zinc-800 hover:bg-zinc-700 px-5 py-3 rounded-xl transition-all flex items-center gap-2">
 
-                Download CSV
+                <span>Download CSV Report</span>
 
             </a>
 
             <a
                 href="/download/pdf"
-                class="border border-zinc-700 hover:bg-zinc-900 px-5 py-3 rounded-xl transition-all">
-
-                Download PDF
+                class="bg-zinc-800 hover:bg-zinc-700 px-5 py-3 rounded-xl transition-all flex items-center gap-2">
+                <span>Download PDF Report</span>
 
             </a>
 
         </section>
+
+        {% endif %}
 
         <!-- SUMMARY TABLE -->
 
@@ -257,11 +248,11 @@
                 <div>
 
                     <h3 class="text-3xl font-bold">
-                        Recent Summaries
+                        AI Generated Summaries
                     </h3>
 
                     <p class="text-zinc-400 mt-2">
-                        AI generated summaries from uploaded documents.
+                        Documents automatically fetched and processed from Google Drive.
                     </p>
 
                 </div>
@@ -336,13 +327,17 @@
 
                             <td class="px-6 py-6">
 
-                                <button
-                                    onclick="openModal(`{{ item.summary_text}}`)"
-                                    class="bg-blue-600 hover:bg-blue-500 transition-all px-4 py-2 rounded-lg text-sm font-medium">
+                                <div class="flex items-center gap-2">
 
-                                    View
+                                    <button
+                                        onclick="openModal(`{{ item.summary_text }}`)"
+                                        class="bg-blue-600 hover:bg-blue-500 transition-all px-4 py-2 rounded-lg text-sm font-medium">
 
-                                </button>
+                                        View
+
+                                    </button>
+
+                                </div>
 
                             </td>
 
@@ -360,19 +355,27 @@
 
             <!-- EMPTY STATE -->
 
-            <div class="p-20 text-center space-y-4">
+            <div class="p-24 text-center space-y-6">
 
-                <div class="text-6xl">
-                    📄
+                <div class="text-7xl">
+                    🤖
                 </div>
 
-                <h3 class="text-2xl font-semibold">
-                    No summaries yet
-                </h3>
+                <div class="space-y-3">
 
-                <p class="text-zinc-400">
-                    Upload a document to generate your first AI summary.
-                </p>
+                    <h3 class="text-3xl font-bold">
+                        No AI Summaries Yet
+                    </h3>
+
+                    <p class="text-zinc-400 text-lg max-w-2xl mx-auto leading-8">
+
+                        Login with Google to automatically fetch documents
+                        from your connected Drive folder and generate
+                        AI-powered summaries.
+
+                    </p>
+
+                </div>
 
             </div>
 

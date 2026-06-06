@@ -11,6 +11,7 @@ from app.core.templates import templates
 from app.core.config import settings
 from app.db.session import engine, SessionLocal
 from app.db.models import Document, Summary
+from app.core.constants import GOOGLE_DRIVE_FOLDER_ID
 
 from app.services.parser import (
     parse_pdf,
@@ -64,10 +65,10 @@ async def documents(request: Request):
         }
     )
 
-@router.post("/process-drive-folder")
+@router.get("/process-drive-folder")
 async def process_drive_folder(
     request: Request,
-    folder_id: str = Form(...)
+    # folder_id: str = Form(...)
 ):
 
     user = request.session.get("user")
@@ -137,7 +138,7 @@ async def process_drive_folder(
     )
 
     results = drive_service.files().list(
-        q=f"'{folder_id}' in parents",
+        q=f"'{GOOGLE_DRIVE_FOLDER_ID}' in parents",
         fields="files(id, name, mimeType)"
     ).execute()
 
